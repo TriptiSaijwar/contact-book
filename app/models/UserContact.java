@@ -1,8 +1,11 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import play.Logger;
+import play.db.jpa.JPA;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by tripti on 05/03/18.
@@ -70,7 +73,40 @@ public class UserContact {
         this.address = address;
     }
 
-    public UserContact findUserWithEmailId(String email) {
+    public static UserContact findUserWithEmailId(String email) {
+        try {
+            return JPA.withTransaction(() -> {
+                TypedQuery<UserContact> query = JPA.em().createQuery("select u from UserContact u where u.email = :email",UserContact.class);
+                query.setParameter("email",email);
+                try {
+                    return query.getSingleResult();
+                }
+                catch (Exception ex) {
+                    return null;
+                }
+            });
+        }
+        catch (Throwable throwable) {
+            Logger.error("{} {} \n{}", "error while finding user contact with email => ", email, throwable.getCause());
+        }
+        return null;
+    }
+
+    public static List<UserContact> getAllUsers() {
+        try {
+            return JPA.withTransaction(() -> {
+                TypedQuery<UserContact> query = JPA.em().createQuery("select u from UserContact u",UserContact.class);
+                try {
+                    return query.getResultList();
+                }
+                catch (Exception ex) {
+                    return null;
+                }
+            });
+        }
+        catch (Throwable throwable) {
+            Logger.error("{} \n{}", "error while fetching user contacts", throwable.getCause());
+        }
         return null;
     }
 }
