@@ -1,12 +1,13 @@
 (function() {
     'use strict';
 
-var contactBookApp = angular.module('contactBook',[]);
+var contactBookApp = angular.module('contactBook',['tableCMSApp']);
 
 contactBookApp.controller('ContactBookController',['$scope','$http',
     function($scope,$http){
 
     $scope.contact = {};
+    $scope.openBook = false;
 
     $scope.saveContact = function($event) {
         if (!$scope.contact) {
@@ -26,6 +27,10 @@ contactBookApp.controller('ContactBookController',['$scope','$http',
                 alertify.error('Error in saving contact 😵',JSON.stringify(error.data));
 //                alertify.alert('Error in saving contact 😵', JSON.stringify(error.data));
             });
+    };
+
+    $scope.showSavedContacts = function($event) {
+        $scope.openBook = true;
     };
 
   }]);

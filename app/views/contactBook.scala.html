@@ -1,42 +1,52 @@
 
-
+<!--https://www.w3schools.com/bootstrap/bootstrap_grid_basic.asp-->
 @main("Contact Book") {
-    <main id="contactBook" ng-app="contactBook" ng-controller="ContactBookController">
-        <div>
+    <main class="container-fluid clearfix" id="contactBook" ng-app="contactBook" ng-controller="ContactBookController">
+        <div class="container-fluid">
             <div>
                 <h1>
                     Contact Book
                 </h1>
             </div>
             <table class="table table-striped table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th class="col-md-2"><span>User Name</span></th>
+                    <th class="col-md-2"><span>Phone Number</span></th>
+                    <th class="col-md-2"><span>Email Id</span></th>
+                    <th class="col-md-4"><span>Address</span></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
                 <tr>
                     <td>
-                        <span>User Name</span>
                         <input type="text" name="userName" ng-model="contact.userName"/>
                     </td>
-                </tr>
-                <tr>
                     <td>
-                        <span>Phone Number</span>
                         <input type="text" name="phoneNumber" ng-model="contact.phoneNumber"/>
                     </td>
-                </tr>
-                <tr>
                     <td>
-                        <span>Email Id</span>
+
                         <input type="text" name="email" ng-model="contact.email"/>
                     </td>
-                </tr>
-                <tr>
                     <td>
-                        <span>Address</span>
-                        <input type="text" name="address" ng-model="contact.address"/>
+                        <input class="col-sm-9" type="text" name="address" ng-model="contact.address"/>
+                    </td>
+                    <td>
+                        <button ng-click="saveContact($event)">
+                            Submit
+                        </button>
                     </td>
                 </tr>
             </table>
-            <button ng-click="saveContact($event)">
-                Submit
-            </button>
         </div>
+
+        <div>
+            <button ng-click="showSavedContacts($event)">Open Book</button>
+        </div>
+
+        <table-cms ng-if="openBook"  get-content-url="/getAllContacts"></table-cms>
     </main>
 }
