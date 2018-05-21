@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "user_contact_book")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserContact {
+public class UserContact extends TemporalModel {
 
     @Id
     @Column(name = "user_id")

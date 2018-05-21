@@ -30,7 +30,15 @@ contactBookApp.controller('ContactBookController',['$scope','$http',
     };
 
     $scope.showSavedContacts = function($event) {
-        $scope.openBook = true;
+        if ($event.target.innerText == "Open Book") {
+            $scope.openBook = true;
+            $event.target.innerText = "Close Book";
+        }
+        else {
+            $scope.openBook = false;
+            $event.target.innerText = "Open Book";
+        }
+
     };
 
   }]);

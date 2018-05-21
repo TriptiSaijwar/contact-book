@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="row in matches track by $index">
+            <tr ng-repeat="row in matches track by $index" ng-if="row.userName != NULL">
                 <td>{{row.userName}}</td>
                 <td>{{row.phoneNumber}}</td>
                 <td>{{row.email}}</td>
