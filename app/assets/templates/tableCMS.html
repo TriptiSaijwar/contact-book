@@ -13,13 +13,27 @@
         </thead>
         <tbody>
             <tr ng-repeat="row in matches track by $index" ng-if="row.userName != NULL">
-                <td>{{row.userName}}</td>
-                <td>{{row.phoneNumber}}</td>
-                <td>{{row.email}}</td>
-                <td>{{row.address}}</td>
                 <td>
-                    <button type="button" class="btn btn-danger" ng-click="deleteMatch($index,$event)">Delete</button>
-                    <button type="button" class="btn btn-primary" ng-click="editMatch($index,$event)">Edit</button>
+                    <span ng-if = "!row.isEditing">{{row.userName}}</span>
+                    <input ng-if = "row.isEditing == true" type="text" ng-model="data.userName">
+                </td>
+                <td>
+                    <span ng-if = "!row.isEditing">{{row.phoneNumber}}</span>
+                    <input ng-if = "row.isEditing == true" type="text" ng-model="data.phoneNumber">
+                </td>
+                <td>
+                    <span ng-if = "!row.isEditing">{{row.email}}</span>
+                    <input ng-if = "row.isEditing == true" type="text" ng-model="data.email">
+                </td>
+                <td>
+                    <span ng-if = "!row.isEditing">{{row.address}}</span>
+                    <input ng-if = "row.isEditing == true" type="text" ng-model="data.address">
+                </td>
+                <td>
+                    <button ng-if = "!row.isEditing" type="button" class="btn btn-danger" ng-click="deleteMatch($index,$event)">Delete</button>
+                    <button ng-if="!row.isEditing" type="button" class="btn btn-primary" ng-click="editMatch($index,$event)">Edit</button>
+                    <button ng-if="row.isEditing == true" type="button" class="btn btn-success" ng-click="saveEditableMatch($index,$event,1)">Save</button>
+                    <button ng-if="row.isEditing == true" type="button" class="btn btn-primary" ng-click="saveEditableMatch($index,$event,0)">Cancel</button>
                 </td>
             </tr>
         </tbody>

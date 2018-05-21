@@ -83,7 +83,7 @@ public class ContactBookRepository implements IContactBookRepository {
                 }
                 else {
                     JPA.em().getTransaction().begin();
-                    JPA.em().persist(userContact);
+                    JPA.em().persist(JPA.em().contains(userContact) ? userContact : JPA.em().merge(userContact));
                     JPA.em().getTransaction().commit();
                     System.out.printf("Generated Contact ID = " + userContact.getUserId());
                     return userContact;

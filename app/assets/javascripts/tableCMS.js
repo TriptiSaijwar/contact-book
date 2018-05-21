@@ -12,6 +12,7 @@ tableCMSApp.directive('tableCms',[function() {
         function tableCmsCtrl($scope, $http, $attrs) {
             $scope.matches = [];
             $scope.data = {};
+            $scope.isEditable = false;
             $http({
                 method : 'GET',
                 url    : $attrs.getContentUrl,
@@ -32,6 +33,7 @@ tableCMSApp.directive('tableCms',[function() {
                 var contact = $scope.matches[index];
                 $http.delete('/deleteContact/' + contact.email, {}).then(
                     function(response){
+                        $scope.matches.splice(index,1);
                         alertify.success("contact deleted successfully :) ");
                     },
                     function(error){
@@ -40,7 +42,38 @@ tableCMSApp.directive('tableCms',[function() {
             };
 
             $scope.editMatch = function(index,$event) {
+                $scope.data = angular.copy($scope.matches[index]);
+                $scope.matches[index].isEditing = true;
+            };
 
+            $scope.saveEditableMatch = function(index,$event,editNewMatch) {
+
+                if (!editNewMatch) {
+                    $scope.matches[index].isEditing = false;
+                    $scope.data = {};
+                    return;
+                }
+
+                if (!$scope.data) {
+                    alert("Please fill the entries");
+                    return;
+                }
+                if (!$scope.data.email || !$scope.data.phoneNumber || !$scope.data.userName || !$scope.data.address) {
+                    alert("Do not leave entries blank");
+                    return;
+                }
+                if ($scope.matches[index].isEditing && editNewMatch) {
+                    $http.put('/editContact/' + $scope.data.email, $scope.data).then(function(response){
+                        $scope.matches[index] = response.data;
+                        $scope.data = {};
+                        $scope.matches[index].isEditing = false;
+                        alertify.success("contact edited successfully :) ");
+                    },function(error){
+                        $scope.data = {};
+                        $scope.matches[index].isEditing = true;
+                        alertify.error('Error in editing contact 😵',JSON.stringify(error.data));
+                    });
+                }
             };
 
         }],

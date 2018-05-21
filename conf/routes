@@ -17,4 +17,4 @@ GET     /contactBook                     controllers.ContactBookController.getVi
 GET     /getAllContacts                  controllers.ContactBookController.getAll()
 POST    /addContact/:emailId             controllers.ContactBookController.add(emailId:String)
 DELETE  /deleteContact/:emailId          controllers.ContactBookController.delete(emailId:String)
-POST    /editContact/:emailId            controllers.ContactBookController.edit(emailId:String)
+PUT    /editContact/:emailId            controllers.ContactBookController.edit(emailId:String)
