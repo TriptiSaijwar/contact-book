@@ -8,6 +8,8 @@ import java.util.Date;
  */
 //Directly updated in DB by making changes in sql
 //https://medium.com/@bengarvey/use-an-updated-at-column-in-your-mysql-table-and-make-it-update-automatically-6bf010873e6a
+//primary key/uique key
+//    https://stackoverflow.com/questions/9565996/difference-between-primary-key-and-unique-key
 @MappedSuperclass
 public class TemporalModel {
     @Column(name = "updated_at")

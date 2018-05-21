@@ -27,6 +27,22 @@ tableCMSApp.directive('tableCms',[function() {
                     alertify.error('Error in fetching data',JSON.stringify(error.data));
                 }
             );
+
+            $scope.deleteMatch = function(index,$event) {
+                var contact = $scope.matches[index];
+                $http.delete('/deleteContact/' + contact.email, {}).then(
+                    function(response){
+                        alertify.success("contact deleted successfully :) ");
+                    },
+                    function(error){
+                        alertify.error('Error in deleting contact 😵',JSON.stringify(error.data));
+                });
+            };
+
+            $scope.editMatch = function(index,$event) {
+
+            };
+
         }],
         templateUrl: '/assets/templates/tableCMS.html'
     };

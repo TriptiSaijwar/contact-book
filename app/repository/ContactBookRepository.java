@@ -46,15 +46,26 @@ public class ContactBookRepository implements IContactBookRepository {
                 return;
             }
             else {
-                Long userId = UserContact.findUserWithEmailId(emailId).getUserId();
-                JPA.em().getTransaction().begin();
-                JPA.em().remove(UserContact.findUserWithEmailId(emailId));
-                JPA.em().getTransaction().commit();
-                System.out.printf("Removed Contact ID = " + userId);
+//                https://stackoverflow.com/questions/17027398/java-lang-illegalargumentexception-removing-a-detached-instance-com-test-user5
+                JPA.withTransaction( () -> {
+                    UserContact contact = UserContact.findUserWithEmailId(emailId);
+                    //transaction is already active. No need to open a new transaction again
+                    if (JPA.em().isOpen()) {
+                        //remove works only on entities which are managed in the current transaction/context
+                        JPA.em().remove(JPA.em().contains(contact) ? contact : JPA.em().merge(contact));
+                    }
+                    else {
+                        JPA.em().getTransaction().begin();
+                        //remove works only on entities which are managed in the current transaction/context
+                        JPA.em().remove(JPA.em().contains(contact) ? contact : JPA.em().merge(contact));
+                        JPA.em().getTransaction().commit();
+                    }
+                    System.out.printf("Removed Contact ID = " + contact.getUserId());
+                });
             }
         }
         catch (Throwable throwable) {
-            Logger.error("{} {} \n{}", "error while deketing user contact with email => ", emailId, throwable.getCause());
+            Logger.error("{} {} \n{}", "error while deleting user contact with email => ", emailId, throwable.getCause());
         }
         return;
     }

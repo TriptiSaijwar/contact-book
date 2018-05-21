@@ -17,7 +17,10 @@
                 <td>{{row.phoneNumber}}</td>
                 <td>{{row.email}}</td>
                 <td>{{row.address}}</td>
-                <td></td>
+                <td>
+                    <button type="button" class="btn btn-danger" ng-click="deleteMatch($index,$event)">Delete</button>
+                    <button type="button" class="btn btn-primary" ng-click="editMatch($index,$event)">Edit</button>
+                </td>
             </tr>
         </tbody>
     </table>
