@@ -1,6 +1,8 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import play.Logger;
 import play.db.jpa.JPA;
 
@@ -13,6 +15,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "user_contact_book")
+//https://www.thoughts-on-java.org/implement-soft-delete-hibernate/?utm_source=mail5&utm_medium=email&utm_campaign=advanced_evergreen
+//Override the default Hibernation delete and set the deleted flag rather than deleting the record from the db.
+@SQLDelete(sql = "UPDATE user_contact_book SET soft_deleted = '1' WHERE user_id = ?")
+//Filter added to retrieve only records that have not been soft deleted.
+@Where(clause="soft_deleted <> '1'")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserContact extends TemporalModel {
 
@@ -32,6 +39,9 @@ public class UserContact extends TemporalModel {
 
     @Column(name = "address")
     private String address;
+
+    @Column(name = "soft_deleted")
+    private boolean softDeleted = false;
 
     public long getUserId() {
         return userId;
@@ -73,6 +83,10 @@ public class UserContact extends TemporalModel {
         this.address = address;
     }
 
+    public boolean getSoftDeleted() { return softDeleted;}
+
+    public void setSoftDeleted(boolean softDeleted) { this.softDeleted = softDeleted; }
+
     public static UserContact findUserWithEmailId(String email) {
         try {
             return JPA.withTransaction(() -> {
@@ -108,5 +122,10 @@ public class UserContact extends TemporalModel {
             Logger.error("{} \n{}", "error while fetching user contacts", throwable.getCause());
         }
         return null;
+    }
+
+    @PreRemove
+    private void onPreRemove() {
+        this.softDeleted = true;
     }
 }
