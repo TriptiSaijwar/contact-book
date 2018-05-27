@@ -8,6 +8,9 @@ tableCMSApp.directive('tableCms',[function() {
 //        https://www.w3schools.com/angular/angular_directives.asp
 //        https://stackoverflow.com/questions/14300986/angularjs-directive-isolated-scope-and-attrs
         restrict: 'E',
+        scope: {
+            test: '='
+        },
         controller: ['$scope', '$http', '$attrs',
         function tableCmsCtrl($scope, $http, $attrs) {
             $scope.matches = [];
@@ -44,6 +47,7 @@ tableCMSApp.directive('tableCms',[function() {
             $scope.editMatch = function(index,$event) {
                 $scope.data = angular.copy($scope.matches[index]);
                 $scope.matches[index].isEditing = true;
+                $scope.test.name = 'Child';
             };
 
             $scope.saveEditableMatch = function(index,$event,editNewMatch) {

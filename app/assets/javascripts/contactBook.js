@@ -9,6 +9,10 @@ contactBookApp.controller('ContactBookController',['$scope','$http',
     $scope.contact = {};
     $scope.openBook = false;
 
+    $scope.test = {
+        name : 'Parent'
+    };
+
     $scope.saveContact = function($event) {
         if (!$scope.contact) {
             alert("Please fill the entries");

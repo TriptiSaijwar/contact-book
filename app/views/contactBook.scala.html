@@ -45,8 +45,9 @@
 
         <div class="openBookButton">
             <button ng-click="showSavedContacts($event)">Open Book</button>
+            <div>{{test.name}}</div>
         </div>
 
-        <table-cms ng-if="openBook"  get-content-url="/getAllContacts"></table-cms>
+        <table-cms ng-if="openBook" test="test" get-content-url="/getAllContacts"></table-cms>
     </main>
 }
