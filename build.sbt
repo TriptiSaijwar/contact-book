@@ -26,6 +26,9 @@ libraryDependencies += "org.webjars" % "jquery-ui" % "1.11.4"
 libraryDependencies += "org.webjars" % "requirejs" % "2.1.20"
 libraryDependencies += "org.webjars.npm" % "alertify.js" % "1.0.10"
 
+//redis dependency
+libraryDependencies += "com.typesafe.play.modules" %% "play-modules-redis" % "2.4.1"
+
 resolvers += "google-sedis-fix" at "http://pk11-scratch.googlecode.com/svn/trunk"
 
 resolvers ++= Seq(
